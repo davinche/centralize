@@ -1,0 +1,4 @@
+coverage/
+dist/
+es2015/
+node_modules/

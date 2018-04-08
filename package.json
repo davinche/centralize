@@ -1,0 +1,52 @@
+{
+  "name": "centralize-js",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./dist/centralize.js",
+  "scripts": {
+    "start": "npm run build && npm run clean && npm run bundle && npm run minify",
+    "build": "tsc",
+    "bundle": "rollup -f cjs -i ./es2015/centralize.js -o ./dist/centralize.js",
+    "minify": "minify ./dist/centralize.js -o ./dist/centralize.min.js",
+    "clean": "rimraf ./dist",
+    "test": "jest",
+    "coverage": "jest --coverage",
+    "watch": "jest --watchAll"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/davinche/centralize.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/davinche/centralize/issues"
+  },
+  "homepage": "https://github.com/davinche/centralize#readme",
+  "devDependencies": {
+    "babel-minify": "^0.4.0",
+    "jest": "^22.4.3",
+    "rimraf": "^2.6.2",
+    "rollup": "^0.57.1",
+    "ts-jest": "^22.4.2",
+    "typescript": "^2.8.1"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ],
+    "testPathIgnorePatterns": [
+      "es2015/"
+    ]
+  }
+}
