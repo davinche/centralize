@@ -36,7 +36,7 @@ send a message.
 ### Using the logger
 
 ```javascript
-import { Logger } from 'centralize';
+import { Logger } from 'centralize-js';
 
 Logger.info('this is an info log');
 Logger.debug('this is a debug log');
@@ -45,7 +45,7 @@ Logger.debug('this is a debug log');
 ### Manually
 
 ```javascript
-import { Hub } from 'centralize';
+import { Hub } from 'centralize-js';
 
 const message = {
   logLevel: 1000000,
@@ -64,7 +64,7 @@ A receiver is any function that can receive a message.
 To receive **all messages**:
 
 ```javascript
-import { Hub, Logger } from 'centralize';
+import { Hub, Logger } from 'centralize-js';
 
 const myReceiver = function(message) {
   console.log(message.value);
@@ -81,7 +81,7 @@ Logger.info('this is an info log');
 You can filter received messages for matching labels by doing the following:
 
 ```javascript
-import { Hub, Logger } from 'centralize';
+import { Hub, Logger } from 'centralize-js';
 
 const myAppMessagesReceiver = function(message) {
   console.log(message.value);
@@ -98,7 +98,7 @@ Logger.debug('my-other-app message', {app: 'not-my-app'});
 ### Filtering received messages by match conditions
 
 ```javascript
-import { Hub, Logger } from 'centralize';
+import { Hub, Logger } from 'centralize-js';
 
 // Scenario: 3 environments (development, staging, production)
 // receiver should only be triggered for staging and production
@@ -127,7 +127,7 @@ Logger.debug('production log', {env: 'production'});
 To set global log level for messages:
 
 ```javascript
-import { Hub, LOG_LEVELS } from 'centralize';
+import { Hub, LOG_LEVELS } from 'centralize-js';
 Hub.messages.setLogLevel(LOG_LEVELS.error);
 
 // only messages that are 'errors' and higher will be dispatched.
@@ -136,7 +136,7 @@ Hub.messages.setLogLevel(LOG_LEVELS.error);
 You can also set a loglevels for individually **matched** messages:
 
 ```javascript
-import { Hub, LOG_LEVELS } from 'centralize';
+import { Hub, LOG_LEVELS } from 'centralize-js';
 
 const myAppReceiver = function(message) {
   console.log(message.value);
