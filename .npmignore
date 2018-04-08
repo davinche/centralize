@@ -1,0 +1,8 @@
+./README.md
+./coverage
+./es2015
+./node_modules
+./package-lock.json
+./package.json
+./src
+./tsconfig.json
