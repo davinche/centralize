@@ -61,7 +61,7 @@ Hub.send(message);
 
 A receiver is any function that can receive a message.
 
-To receive **all messages**:
+To receive **all messages**, you can attach to the global stream:
 
 ```javascript
 import { Hub, Logger } from 'centralize-js';
@@ -75,6 +75,16 @@ Logger.info('this is an info log');
 // console.log outputs 'this is an info log'
 ```
 
+Any configuration to the global stream will apply to all messages. There are
+certain scenarios where you would want to leave the global stream intact, but
+add customizations while still receiving all messages (ie: set log levels but
+not applied globally).
+
+To do so, you can use the `matchAll()` function to create a new substream that
+receives all of the messages from the global stream.
+```
+const stream = Hub.messages.matchAll().addReceiver(myreceiver);
+```
 
 ### Filter received messages by labels
 

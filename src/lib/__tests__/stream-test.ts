@@ -80,6 +80,29 @@ describe('Stream', () => {
     });
   });
 
+  describe('matchAll', () => {
+    it ('sends all messages to the stream', () => {
+      stream.matchAll().addReceiver(receiver);
+      const message: IMessage = {
+        logLevel: DEFAULT_LOG_LEVELS.debug,
+        labels: {},
+        value: 'foo'
+      };
+
+      const message2: IMessage = {
+        logLevel: DEFAULT_LOG_LEVELS.error,
+        labels: {app: 'foo'},
+        value: 'bar'
+      };
+
+      stream.send(message);
+      expect(mockfn).toHaveBeenCalledWith(message);
+
+      stream.send(message2);
+      expect(mockfn).toHaveBeenCalledWith(message2);
+    });
+  });
+
   describe('matchLabels', () => {
     it ('only sends messages to receivers when message labels match the labels specified in matchLabels', () => {
       const labels: ILabel = {

@@ -15,6 +15,14 @@ export class Stream {
   }
 
   /**
+   * MatchAll - creates a new stream that passes all messages
+   * @returns {object} stream
+   */
+  matchAll() : Stream {
+    return new MatchAllStream(this);
+  }
+
+  /**
    * MatchLabels - creates a new stream that filters for specified labels
    * @param {object} labels
    * @returns {object} stream
@@ -80,6 +88,19 @@ export class Stream {
 // Abstract class for dealing with Message Filtering Streams
 abstract class StreamFilter extends Stream {
   abstract rule(m: IMessage);
+}
+
+// Stream that matches all labels
+class MatchAllStream extends StreamFilter {
+  constructor(parentStream: Stream) {
+    super(parentStream);
+    this.rule = this.rule.bind(this);
+    parentStream.addReceiver(this.rule);
+  }
+
+  rule(m: IMessage) {
+    this.send(m);
+  }
 }
 
 // Stream that ensures all labels from a message matches the labels for the stream
