@@ -14,7 +14,7 @@ function createMessage(logLevel=DEFAULT_LOG_LEVELS.log, labels={}) : IMessage {
 // standard log levels (corresponds to functions on console)
 export const DEFAULT_LOG_LEVELS: ILogLevels = {
   debug: 10,
-  log: 20,
+  log: 10,
   info: 30,
   warn: 40,
   error: 50,
