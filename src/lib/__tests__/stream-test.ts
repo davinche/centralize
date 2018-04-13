@@ -174,7 +174,7 @@ describe('Stream', () => {
     });
   });
 
-  describe('matchConditions', () => {
+  describe('matchCondition', () => {
     describe('IN condition', () => {
       it ('sends receivers messages only if the value for a specific label is within a given set of values', () => {
         const l1: ILabel = {
@@ -210,17 +210,17 @@ describe('Stream', () => {
         };
 
         // Messages only for 'my-app' and 'other-app' should be received
-        stream.matchConditions('app', 'IN', ['my-app', 'other-app']).addReceiver(receiver);
+        stream.matchCondition('app', 'IN', ['my-app', 'other-app']).addReceiver(receiver);
         stream.send(m1);
         expect(mockfn).toHaveBeenCalledWith(m1);
         mockfn.mockClear();
 
-        stream.matchConditions('app', 'IN', ['my-app', 'other-app']).addReceiver(receiver);
+        stream.matchCondition('app', 'IN', ['my-app', 'other-app']).addReceiver(receiver);
         stream.send(m2);
         expect(mockfn).toHaveBeenCalledWith(m2);
         mockfn.mockClear();
 
-        stream.matchConditions('app', 'IN', ['my-app', 'other-app']).addReceiver(receiver);
+        stream.matchCondition('app', 'IN', ['my-app', 'other-app']).addReceiver(receiver);
         stream.send(m3);
         expect(mockfn).not.toHaveBeenCalled();
         mockfn.mockClear();
@@ -261,7 +261,7 @@ describe('Stream', () => {
         };
 
         // Messages not for 'my-app' and 'other-app' should be received
-        stream.matchConditions('app', 'NOT_IN', ['my-app', 'other-app']).addReceiver(receiver);
+        stream.matchCondition('app', 'NOT_IN', ['my-app', 'other-app']).addReceiver(receiver);
         stream.send(m1);
         expect(mockfn).not.toHaveBeenCalled();
         mockfn.mockClear();
@@ -310,7 +310,7 @@ describe('Stream', () => {
         };
 
         // Messages not for 'my-app' and 'other-app' should be received
-        stream.matchConditions('app', 'NOT', 'my-app').addReceiver(receiver);
+        stream.matchCondition('app', 'NOT', 'my-app').addReceiver(receiver);
         stream.send(m1);
         expect(mockfn).not.toHaveBeenCalled();
         mockfn.mockClear();
@@ -328,7 +328,7 @@ describe('Stream', () => {
     describe('throw on unknown operator', () => {
       it ('should throw when given an unknown operator', () => {
         const shouldThrow = () => {
-          stream.matchConditions('foo', 'some-unknown-opp', 'bar');
+          stream.matchCondition('foo', 'some-unknown-opp', 'bar');
         };
         expect(shouldThrow).toThrow();
       });

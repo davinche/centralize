@@ -32,13 +32,13 @@ export class Stream {
   }
 
   /**
-   * MatchLabels - creates a new stream that filters messages for matching conditions
+   * MatchCondition - creates a new stream that filters messages for the matching condition
    * @param {string} key - the name of the label
    * @param {string} operator - the conditional operator (IN | NOT_IN | NOT)
    * @param {any} value - the value to check against
    * @returns {object} stream
    */
-  matchConditions(key: string, operator: string, value: any) : Stream {
+  matchCondition(key: string, operator: string, value: any) : Stream {
     return new MatchConditionStream(this, {key, operator, value});
   }
 
