@@ -28,7 +28,7 @@ const message = {
 ```
 
 A message sent by the hub will be dispatched to all **receivers**.
-To send a message, can use the library provided logger or manually create and
+To send a message, you can use the library provided logger or manually create and
 send a message.
 
 ## Sending Messages
