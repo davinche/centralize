@@ -106,7 +106,7 @@ export class Stream {
       }, m);
     }
 
-    if (m === null) {
+    if (!m) {
       return;
     }
 
