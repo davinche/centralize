@@ -91,6 +91,23 @@ describe('Stream', () => {
       expect(message.value).toBe('bar');
       expect(mockfn).toHaveBeenCalledWith(message);
     });
+
+    it ('does not call message receivers if interceptor returns null', () => {
+      stream.addReceiver(receiver);
+      const interceptor = (m) =>  {
+        return null;
+      };
+
+      stream.addInterceptor(interceptor);
+      const message = {
+        logLevel: DEFAULT_LOG_LEVELS.debug,
+        labels: {},
+        value: 'foo'
+      };
+      stream.send(message);
+      expect(mockfn).not.toHaveBeenCalled();
+
+    });
   });
 
   describe('removeInterceptor', () => {
