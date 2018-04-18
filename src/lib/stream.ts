@@ -7,6 +7,7 @@ import {
 
 export class Stream {
   _receivers: Array<IReceiver> = [];
+  _interceptors: Array<IReceiver> = [];
   _parentStream: Stream|null;
   _logLevel: number | undefined;
 
@@ -71,6 +72,25 @@ export class Stream {
   }
 
   /**
+   * AddInterceptor - add an interceptor for the stream
+   * @param {object} inteceptor
+   */
+  addInterceptor(c: IReceiver) {
+    this._interceptors.push(c);
+    return (() => {
+      this.removeInterceptor(c);
+    });
+  }
+
+  /**
+   * RemoveInterceptor - remove an interceptor from the stream
+   * @param {object} consumer
+   */
+  removeInterceptor(c: IReceiver) {
+    this._interceptors = this._interceptors.filter((consumer) => consumer !== c);
+  }
+
+  /**
    * Send - sends a message to all consumers
    * @param {object} Message
    */
@@ -79,8 +99,19 @@ export class Stream {
       return;
     }
 
+    let m : IMessage | null = msg;
+    if (this._interceptors.length) {
+      m = this._interceptors.reduce((m, interceptor) : any => {
+        return interceptor(m);
+      }, m);
+    }
+
+    if (!m) {
+      return;
+    }
+
     this._receivers.forEach((consumer) => {
-      consumer(msg);
+      consumer((m as IMessage));
     });
   }
 }

@@ -6,6 +6,23 @@
   <img src="https://api.travis-ci.org/davinche/centralize.svg?branch=master" alt="build status"/>
 </p>
 
+<!-- vim-markdown-toc GFM -->
+
+* [Installation](#installation)
+* [Messages](#messages)
+* [Sending Messages](#sending-messages)
+  * [Using the logger](#using-the-logger)
+  * [Manually](#manually)
+* [Receiving Messages](#receiving-messages)
+  * [Filter received messages by labels](#filter-received-messages-by-labels)
+  * [Filtering received messages by match conditions](#filtering-received-messages-by-match-conditions)
+* [Interceptors](#interceptors)
+  * [Adding an interceptor](#adding-an-interceptor)
+  * [Removing an interceptor](#removing-an-interceptor)
+* [Log Levels](#log-levels)
+
+<!-- vim-markdown-toc -->
+
 ## Installation
 
 `npm install centralize-js --save`
@@ -131,6 +148,48 @@ Logger.debug('production log', {env: 'production'});
 1. 'IN'
 2. 'NOT_IN'
 3. 'NOT'
+
+
+## Interceptors
+
+Interceptors allow you to intercept a message and mutate it before
+passing it down the stream.
+
+An interceptor must either return a message, or `null` to stop the message from
+propogating further.
+
+### Adding an interceptor
+
+```javascript
+const myInterceptor = (message) => {
+  message.value = 'bar';
+  return message;
+};
+
+const myReceiver = (message) => {
+  console.log(message.value);
+};
+
+Hub.messages.addInterceptor(myInterceptor);
+Hub.messages.addReceiver(myReceiver);
+
+
+Hub.messages.send({
+  value: 'foo';
+});
+
+// console.log outputs 'bar'
+```
+
+### Removing an interceptor
+
+```javascript
+const myInterceptor = (message) => {
+// interceptor code
+};
+
+Hub.messages.removeInterceptor(myInterceptor);
+```
 
 ## Log Levels
 

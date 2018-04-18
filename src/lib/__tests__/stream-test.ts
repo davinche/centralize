@@ -56,6 +56,85 @@ describe('Stream', () => {
     });
   });
 
+  describe('addInterceptor', () => {
+    it ('should call my interceptor', () => {
+      const mockfn = jest.fn();
+      const interceptor = (m) =>  {
+        mockfn();
+        return m;
+      };
+
+      stream.addInterceptor(interceptor);
+      const message = {
+        logLevel: DEFAULT_LOG_LEVELS.debug,
+        labels: {},
+        value: 'foo'
+      };
+      stream.send(message);
+      expect(mockfn).toHaveBeenCalled();
+    });
+
+    it ('allows an interceptor to augment a message', () => {
+      stream.addReceiver(receiver);
+      const interceptor = (m) =>  {
+        m.value = 'bar';
+        return  m;
+      };
+
+      stream.addInterceptor(interceptor);
+      const message = {
+        logLevel: DEFAULT_LOG_LEVELS.debug,
+        labels: {},
+        value: 'foo'
+      };
+      stream.send(message);
+      expect(message.value).toBe('bar');
+      expect(mockfn).toHaveBeenCalledWith(message);
+    });
+
+    it ('does not call message receivers if interceptor returns null', () => {
+      stream.addReceiver(receiver);
+      const interceptor = (m) =>  {
+        return null;
+      };
+
+      stream.addInterceptor(interceptor);
+      const message = {
+        logLevel: DEFAULT_LOG_LEVELS.debug,
+        labels: {},
+        value: 'foo'
+      };
+      stream.send(message);
+      expect(mockfn).not.toHaveBeenCalled();
+
+    });
+  });
+
+  describe('removeInterceptor', () => {
+    it('removes my interceptor', () => {
+      const mockfn = jest.fn();
+      const interceptor = (m) =>  {
+        mockfn(m);
+        return m;
+      };
+
+      stream.addInterceptor(interceptor);
+      const message = {
+        logLevel: DEFAULT_LOG_LEVELS.debug,
+        labels: {},
+        value: 'foo'
+      };
+      stream.send(message);
+      expect(mockfn).toHaveBeenCalled();
+      mockfn.mockClear();
+      expect(mockfn).not.toHaveBeenCalled();
+      stream.removeInterceptor(interceptor);
+      expect(mockfn).not.toHaveBeenCalled();
+      stream.send(message);
+      expect(mockfn).not.toHaveBeenCalled();
+    });
+  });
+
   describe('setLogLevel', () => {
     it ('should set the loglevel such that certain messages are not received', () => {
       stream.addReceiver(receiver);
