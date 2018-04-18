@@ -18,5 +18,5 @@ export interface ISender {
 }
 
 export interface IReceiver {
-  (msg: IMessage);
+  (msg: IMessage) : any;
 }
