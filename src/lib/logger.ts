@@ -27,7 +27,18 @@ export default class Logger {
    * @param {object} sender - object contains send(msg: IMessage)
    * @param {object} logLevels - object containing (levelName:number)
    */
-  constructor(private _sender: ISender , logLevels: ILogLevels) {
+  constructor(private _sender: ISender , private _logLevels: ILogLevels=DEFAULT_LOG_LEVELS) {
+    this.setLogLevels(_logLevels);
+  }
+
+  /**
+   * setLogLevels - creates log functions on the logger that send messages
+   *     with the speecified priority.
+   * @param {object} logLevels
+   */
+  setLogLevels(logLevels: ILogLevels) {
+    // remove old log levels
+    Object.keys(this._logLevels).forEach((k) => { delete(this[k]); });
     Object.keys(logLevels).forEach((k) => {
       this[k] = (val: any, labels={}) => {
         const logLevel = logLevels[k];
@@ -36,6 +47,7 @@ export default class Logger {
         this._sender.send(message);
       }
     });
+    this._logLevels = logLevels;
   }
 
   /**

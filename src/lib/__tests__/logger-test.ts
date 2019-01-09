@@ -1,5 +1,4 @@
 import Logger from '../logger';
-import {IMessage} from '../interfaces';
 declare var global: any;
 
 const origDate = Date;
@@ -22,14 +21,10 @@ describe('Logger', () => {
         bar: 2
       };
       const mockfn = jest.fn();
-      const msgReceiver = function(msg: IMessage) {
-        mockfn(msg);
-      };
-
       const sender = {
-        send: msgReceiver
+        send: mockfn
       };
-      const l = new Logger(sender, levels);
+      const l = new Logger(sender, levels) as any;
       // custom log functions are defined
       expect(l.foo).toBeDefined();
       expect(l.bar).toBeDefined();
@@ -59,11 +54,8 @@ describe('Logger', () => {
     it ('creates a logging function that logs at a particular log level with specific labels', () => {
       const levels = { foo: 1, };
       const mockfn = jest.fn();
-      const msgReceiver = function(msg: IMessage) {
-        mockfn(msg);
-      };
       const sender = {
-        send: msgReceiver
+        send: mockfn
       };
       const l = new Logger(sender, levels);
       const myLabels = { app: 'myApp', tag: 'awesome' };
@@ -76,6 +68,28 @@ describe('Logger', () => {
         value: 'wow',
         timestamp: staticDate
       });
+    });
+  });
+
+  describe('setLogLevel', () => {
+    it ('creates log functions on the logger that sends messages at the specified priorities', () => {
+      const levels = { foo: 1, bar: 2};
+      const mockfn = jest.fn();
+      const sender = {
+        send: mockfn
+      };
+      const l = new Logger(sender) as any;
+      expect(l.foo).toBeUndefined();
+      expect(l.bar).toBeUndefined();
+      l.setLogLevels(levels);
+      expect(l.foo).toBeDefined();
+      expect(l.bar).toBeDefined();
+      l.foo();
+      l.bar();
+      expect(mockfn).toHaveBeenCalled();
+      expect(mockfn.mock.calls.length).toBe(2);
+      expect(mockfn.mock.calls[0][0].logLevel).toBe(1);
+      expect(mockfn.mock.calls[1][0].logLevel).toBe(2);
     });
   });
 });
