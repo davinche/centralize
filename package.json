@@ -18,15 +18,16 @@
     "url": "git+https://github.com/davinche/centralize.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "Vincent Cheung",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/davinche/centralize/issues"
   },
   "homepage": "https://github.com/davinche/centralize#readme",
   "devDependencies": {
+    "@types/jest": "^23.3.12",
     "babel-minify": "^0.4.0",
-    "jest": "^22.4.3",
+    "jest": "^23.6.0",
     "rimraf": "^2.6.2",
     "rollup": "^0.57.1",
     "ts-jest": "^22.4.2",
