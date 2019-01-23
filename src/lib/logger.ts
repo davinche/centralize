@@ -2,7 +2,14 @@ import {ILogLevels, ISender, IMessage} from './interfaces';
 
 // helper for creating messages
 /* istanbul ignore next */
-function createMessage(logLevel=DEFAULT_LOG_LEVELS.log, labels={}) : IMessage {
+
+/**
+ * CreateMessage
+ * @param {number} logLevel
+ * @param {object} labels
+ * @returns {message}
+ */
+export function createMessage(logLevel=DEFAULT_LOG_LEVELS.log, labels={}) : IMessage {
   return {
     logLevel,
     labels,
