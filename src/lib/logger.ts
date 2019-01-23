@@ -58,6 +58,14 @@ export default class Logger {
   }
 
   /**
+   * getLogLevels - get the log levels used to create the logging functions
+   * @returns {object}
+   */
+  getLogLevels() {
+    return this._logLevels;
+  }
+
+  /**
    * Create a new logging function
    * @param {number} logLevel - the log level this function will log at
    * @param {object} labels - the labels to automatically add to the logged message
