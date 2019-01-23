@@ -33,8 +33,12 @@ export default class Logger {
    * constructor
    * @param {object} sender - object contains send(msg: IMessage)
    * @param {object} logLevels - object containing (levelName:number)
+   * @param {object} labels - default labels for the logger
    */
-  constructor(private _sender: ISender , private _logLevels: ILogLevels=DEFAULT_LOG_LEVELS) {
+  constructor(
+    private _sender: ISender,
+    private _logLevels: ILogLevels=DEFAULT_LOG_LEVELS,
+    private _labels = {}) {
     this.setLogLevels(_logLevels);
   }
 
@@ -49,7 +53,8 @@ export default class Logger {
     Object.keys(logLevels).forEach((k) => {
       this[k] = (val: any, labels={}) => {
         const logLevel = logLevels[k];
-        const message = createMessage(logLevel, labels);
+        const appliedLabels = Object.assign({}, this._labels, labels);
+        const message = createMessage(logLevel, appliedLabels);
         message.value = val;
         this._sender.send(message);
       }
@@ -63,6 +68,22 @@ export default class Logger {
    */
   getLogLevels() {
     return this._logLevels;
+  }
+
+  /**
+   * setLabels - set the default labels for the logger
+   * @param {Object} labels
+   */
+  setLabels(labels={}) {
+    this._labels = labels;
+  }
+
+  /**
+   * getLabels - the default labels for the logger
+   * @returns {Object} labels
+   */
+  getLabels() {
+    return this._labels;
   }
 
   /**
