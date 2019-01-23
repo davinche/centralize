@@ -4,10 +4,8 @@
   "description": "",
   "main": "./dist/centralize.js",
   "scripts": {
-    "start": "npm run build && npm run clean && npm run bundle && npm run minify",
+    "start": "npm run clean && npm run build",
     "build": "tsc",
-    "bundle": "rollup -f cjs -i ./es2015/centralize.js -o ./dist/centralize.js",
-    "minify": "minify ./dist/centralize.js -o ./dist/centralize.min.js",
     "clean": "rimraf ./dist",
     "test": "jest",
     "coverage": "jest --coverage",
@@ -45,9 +43,6 @@
       "jsx",
       "json",
       "node"
-    ],
-    "testPathIgnorePatterns": [
-      "es2015/"
     ]
   }
 }
