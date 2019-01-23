@@ -10,6 +10,7 @@
 
 * [Installation](#installation)
 * [Messages](#messages)
+* [Creating Messages](#creating-messages)
 * [Sending Messages](#sending-messages)
   * [Using the logger](#using-the-logger)
   * [Manually](#manually)
@@ -48,15 +49,48 @@ A message sent by the hub will be dispatched to all **receivers**.
 To send a message, you can use the library provided logger or manually create and
 send a message.
 
+
+## Creating Messages
+
+You can use the utility function `CreateMessage` to create an empty message.
+
+```javascript
+import {CreateMessage} from 'centralize-js';
+const myAnalyticsMessage = CreateMessage(10, {type: 'analytics'});
+myAnalyticsMessage.value = 'val';
+```
+
 ## Sending Messages
 
 ### Using the logger
 
 ```javascript
-import { Logger } from 'centralize-js';
+import Logger from 'centralize-js';
 
 Logger.info('this is an info log');
 Logger.debug('this is a debug log');
+```
+
+**Note**: The logger contains the `info()`, `debug()`, `warn()`... methods because it is created using the `DEFAULT_LOG_LEVELS`.
+
+
+You can use your own custom methods by creating a new logger with your own log levels:
+
+```javascript
+import {Hub, LoggerClass} from 'centralize-js';
+const myLogger = new LoggerClass(Hub, {foo: 10, bar: 20});
+// myLogger.foo('my message');
+// myLogger.bar('my other message');
+```
+
+Or you can change the log levels using the `setLogLevels()` method.
+
+```javascript
+import Logger from 'centralize-js';
+Logger.setLogLevels({foo: 10, bar: 20});
+
+// Logger.foo('my message');
+// Logger.bar('my other message');
 ```
 
 ### Manually
@@ -64,12 +98,17 @@ Logger.debug('this is a debug log');
 ```javascript
 import { Hub } from 'centralize-js';
 
+// Create the message manually
 const message = {
   logLevel: 1000000,
   labels: {},
   timestamp: new Date(),
   value: 'This is a very important message due to the high logLevel'
 }
+
+// alternatively use the CreateMessage function
+// const message = CreateMessage(1000000);
+// message.value = 'This is a very important message due to the high logLevel';
 
 Hub.send(message);
 ```
