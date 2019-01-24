@@ -131,20 +131,23 @@ Logger.info('this is an info log');
 // console.log outputs 'this is an info log'
 ```
 
-Any configuration to the global stream will apply to all messages. There are
-certain scenarios where you would want to leave the global stream intact, but
-add customizations while still receiving all messages (ie: set log levels but
-not applied globally).
+Any configuration applied to the global stream will apply to all messages.
+There may be scenarios where you want to set log levels for certain messages
+and not at the global level.
 
-To do so, you can use the `matchAll()` function to create a new substream that
-receives all of the messages from the global stream.
-```
-const stream = Hub.messages.matchAll().addReceiver(myreceiver);
+
+To do this, you can use the `matchAll()` function to create a new substream that
+receives all of the messages from the global stream. You can then apply the log
+levels to the substream instead of the global stream.
+
+```javascript
+const stream = Hub.messages.matchAll()
+  .setLogLevel(LOG_LEVELS.error).addReceiver(myreceiver);
 ```
 
 ### Filter received messages by labels
 
-You can filter received messages for matching labels by doing the following:
+You can filter for specific messages by applying labels a message must match:
 
 ```javascript
 import { Hub, Logger } from 'centralize-js';
@@ -191,8 +194,8 @@ Logger.debug('production log', {env: 'production'});
 
 ## Interceptors
 
-Interceptors allow you to intercept a message and mutate it before
-passing it down the stream.
+Interceptors gives you the opportunity to change a message before it is passed
+down the stream.
 
 An interceptor must either return a message, or `null` to stop the message from
 propogating further.
@@ -241,7 +244,7 @@ Hub.messages.setLogLevel(LOG_LEVELS.error);
 // only messages that are 'errors' and higher will be dispatched.
 ```
 
-You can also set a loglevels for individually **matched** messages:
+You can also set a loglevels for filtered messages:
 
 ```javascript
 import { Hub, LOG_LEVELS } from 'centralize-js';
